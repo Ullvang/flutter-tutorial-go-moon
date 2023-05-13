@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import 'package:flutter_go_moon/widgets/custom_dropdown_button.dart';
 
 class HomePage extends StatelessWidget {
   late double _deviceHeight, _deviceWidth;
@@ -13,18 +14,27 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: Container(
-            padding: EdgeInsets.symmetric(horizontal: _deviceWidth * 0.05),
-            height: _deviceHeight,
-            width: _deviceWidth,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _pageTitle(),
-                _destinationDropDownWidget(),
-              ],
-            )),
+          padding: EdgeInsets.symmetric(horizontal: _deviceWidth * 0.05),
+          height: _deviceHeight,
+          width: _deviceWidth,
+          child: Stack(
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  _pageTitle(),
+                  _bookRideWidget(),
+                ],
+              ),
+              Align(
+                alignment: Alignment.centerRight,
+                child: _astroImageWidget(),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -41,52 +51,87 @@ class HomePage extends StatelessWidget {
   }
 
   Widget _astroImageWidget() {
-    return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/images/astro_moon.png"),
-            fit: BoxFit.fill,
-          ),
+    return Container(
+      height: _deviceHeight * 0.50,
+      width: _deviceWidth * 0.65,
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage("assets/images/astro_moon.png"),
+          fit: BoxFit.fill,
         ),
       ),
     );
   }
 
-  Widget _destinationDropDownWidget() {
-    List<String> _items = [
-      "James Webb Station",
-      "Prenumbra Station",
-    ];
-
+  Widget _bookRideWidget() {
     return Container(
-      width: _deviceWidth,
-      padding: EdgeInsets.symmetric(
-        horizontal: _deviceWidth * 0.05,
+      height: _deviceHeight * 0.25,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          _destinationDropDownWidget(),
+          _travellersInformationWidget(),
+          _rideButton(),
+        ],
       ),
+    );
+  }
+
+  Widget _destinationDropDownWidget() {
+    return CustomDropDownButton(
+      values: const [
+        "James Webb Station",
+        "Prenumbra Station",
+      ],
+      width: _deviceWidth,
+    );
+  }
+
+  Widget _travellersInformationWidget() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisSize: MainAxisSize.max,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        CustomDropDownButton(
+          values: const [
+            "1",
+            "2",
+            "3",
+            "4",
+          ],
+          width: _deviceWidth * 0.40,
+        ),
+        CustomDropDownButton(
+          values: const [
+            "Economy",
+            "Business",
+            "First Class",
+            "Premium",
+          ],
+          width: _deviceWidth * 0.45,
+        ),
+      ],
+    );
+  }
+
+  Widget _rideButton() {
+    return Container(
+      margin: EdgeInsets.only(bottom: _deviceHeight * 0.01),
+      width: _deviceWidth,
       decoration: BoxDecoration(
-        color: const Color.fromRGBO(53, 53, 53, 1.0),
+        color: Colors.white,
         borderRadius: BorderRadius.circular(
           10,
         ),
       ),
-      child: DropdownButton(
-        value: _items.first,
-        items: _items.map(
-          (e) {
-            return DropdownMenuItem(
-              value: e,
-              child: Text(e),
-            );
-          },
-        ).toList(),
-        underline: Container(),
-        dropdownColor: const Color.fromRGBO(53, 53, 53, 1.0),
-        onChanged: (value) {
-          print(value);
-        },
-        style: const TextStyle(
-          color: Colors.white,
+      child: MaterialButton(
+        onPressed: () {},
+        child: const Text(
+          "Book Ride!",
+          style: TextStyle(color: Colors.black),
         ),
       ),
     );
